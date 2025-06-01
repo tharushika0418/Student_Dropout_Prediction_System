@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Results</h1>
+        
+        {% if error %}
+            <div class="error-message">
+                <h3>Error occurred:</h3>
+                <p>{{ error }}</p>
+            </div>
+        {% else %}
+            <div class="result-card">
+                <h2>Prediction: {{ result.prediction }}</h2>
+                <p>Confidence: {{ "%.1f"|format(result.confidence * 100) }}%</p>
+                <p>Model: {{ result.model_used }}</p>
+                
+                <h3>Class Probabilities:</h3>
+                <div class="probability-bars">
+                    {% for class_name, probability in result.probabilities.items() %}
+                    <div class="prob-item">
+                        <span>{{ class_name }}</span>
+                        <div class="prob-bar">
+                           <div class="prob-fill" style="width: {{ probability * 100 }}%;"></div>
+
+
+                        </div>
+                        <span>{{ "%.1f"|format(probability * 100) }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <a href="/predict" class="btn-secondary">New Prediction</a>
+        <a href="/" class="btn-secondary">Home</a>
+    </div>
+</body>
+</html>
